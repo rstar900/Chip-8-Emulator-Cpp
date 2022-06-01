@@ -38,7 +38,7 @@ uint8_t fontset[FONTSET_SIZE] =
 class Chip8 
 {
 public:
-    // Internal components
+    // Internal components (general note: {} after definition initializes the members with zeroes)
     uint8_t registers[16]{};
     uint8_t memory[4096]{};
     uint16_t stack[16]{};
@@ -55,9 +55,22 @@ public:
     std::default_random_engine randGen;
     std::uniform_int_distribution<uint8_t> randByte;
 
-    // Methods
+    // General methods
     Chip8();
     void LoadROM(char const* filename);
+
+    // Instructions
+    void OP_NULL(); // NOP instruction
+    void OP_00E0(); // CLS
+    void OP_00EE(); // RET
+    void OP_1nnn(); // JP addr
+    void OP_2nnn(); // CALL addr
+    void OP_3xkk(); // SE Vx, byte
+    void OP_4xkk(); // SNE Vx, byte
+    void OP_5xy0(); // SE Vx, Vy
+    void OP_6xkk(); // LD Vx, byte
+    void OP_7xkk(); // ADD Vx, byte
+    void OP_8xy0(); // LD Vx, Vy
 }; 
 
 #endif
