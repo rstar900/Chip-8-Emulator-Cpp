@@ -27,10 +27,10 @@ uint8_t fontset[FONTSET_SIZE] =
     0xF0, 0x90, 0xF0, 0x10, 0xF0, // 9
     0xF0, 0x90, 0xF0, 0x90, 0x90, // A
     0xE0, 0x90, 0xE0, 0x90, 0xE0, // B
-	0xF0, 0x80, 0x80, 0x80, 0xF0, // C
-	0xE0, 0x90, 0x90, 0x90, 0xE0, // D
-	0xF0, 0x80, 0xF0, 0x80, 0xF0, // E
-	0xF0, 0x80, 0xF0, 0x80, 0x80  // F
+    0xF0, 0x80, 0x80, 0x80, 0xF0, // C
+    0xE0, 0x90, 0x90, 0x90, 0xE0, // D
+    0xF0, 0x80, 0xF0, 0x80, 0xF0, // E
+    0xF0, 0x80, 0xF0, 0x80, 0x80  // F
 };
 
 
@@ -38,6 +38,7 @@ uint8_t fontset[FONTSET_SIZE] =
 class Chip8 
 {
 public:
+
     // Internal components (general note: {} after definition initializes the members with zeroes)
     uint8_t registers[16]{};
     uint8_t memory[4096]{};
@@ -71,6 +72,15 @@ public:
     void OP_6xkk(); // LD Vx, byte
     void OP_7xkk(); // ADD Vx, byte
     void OP_8xy0(); // LD Vx, Vy
+    void OP_8xy1(); // OR Vx, Vy
+    void OP_8xy2(); // AND Vx, Vy
+    void OP_8xy3(); // XOR Vx, Vy
+    void OP_8xy4(); // ADD Vx, Vy
+    void OP_8xy5(); // SUB Vx, Vy
+    void OP_8xy6(); // SHR Vx
+    void OP_8xy7(); // SUBN Vx, Vy
+    void OP_8xyE(); // SHL Vx, {, Vy}
+    void OP_9xy0(); // SNE Vx, Vy   
 }; 
 
 #endif

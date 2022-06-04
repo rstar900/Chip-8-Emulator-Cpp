@@ -136,3 +136,105 @@ void Chip8::OP_8xy0()
     // Load Register Vx with value of Register Vy
     registers[x] = registers[y];
 }
+
+void Chip8::OP_8xy1()
+{
+    uint8_t y = (opcode & 0x00F0u) >> 4u; // Register Vy
+    uint8_t x = (opcode & 0x0F00u) >> 8u; // Register Vx
+
+    // OR Register Vx with value of Register Vy
+    registers[x] |= registers[y];
+}
+
+void Chip8::OP_8xy2()
+{
+    uint8_t y = (opcode & 0x00F0u) >> 4u; // Register Vy
+    uint8_t x = (opcode & 0x0F00u) >> 8u; // Register Vx
+
+    // AND Register Vx with value of Register Vy
+    registers[x] &= registers[y];
+}
+
+void Chip8::OP_8xy3()
+{
+    uint8_t y = (opcode & 0x00F0u) >> 4u; // Register Vy
+    uint8_t x = (opcode & 0x0F00u) >> 8u; // Register Vx
+
+    // XOR Register Vx with value of Register Vy
+    registers[x] ^= registers[y];
+}
+
+void Chip8::OP_8xy4()
+{
+    uint8_t y = (opcode & 0x00F0u) >> 4u; // Register Vy
+    uint8_t x = (opcode & 0x0F00u) >> 8u; // Register Vx
+
+    uint16_t sum = registers[x] + registers[y]; // Vx + Vy
+
+    if (sum > 255U)
+        registers[0xF] = 1; // if overflow, then Vf = 1 (Carry)
+    else
+        registers[0xF] = 0;        
+
+    // Load Register Vx with Least significant 8 bits of sum
+    registers[x] = sum & 0xFFu;
+}
+
+void Chip8::OP_8xy5()
+{
+    uint8_t y = (opcode & 0x00F0u) >> 4u; // Register Vy
+    uint8_t x = (opcode & 0x0F00u) >> 8u; // Register Vx
+
+    if (registers[x] > registers[y])
+        registers[0xF] = 1; // if Vx > Vy, set Vf to 1 (not borrow)
+    else
+        registers[0xF] = 0;        
+
+    // Load Register Vx with Vx - Vy
+    registers[x] -= registers[y];
+}
+
+void Chip8::OP_8xy6()
+{
+    uint8_t x = (opcode & 0x0F00u) >> 8u; // Register Vx
+
+    registers[0xF] = (registers[x] & 0x1u); // Store Least Significant bit of Vx in Vf
+
+    // Right shift value of Register Vx by 1
+    registers[x] >>= 1;
+}
+
+void Chip8::OP_8xy7()
+{
+    uint8_t y = (opcode & 0x00F0u) >> 4u; // Register Vy
+    uint8_t x = (opcode & 0x0F00u) >> 8u; // Register Vx
+
+    if (registers[y] > registers[x])
+        registers[0xF] = 1; // if Vy > Vx, set Vf to 1 (not borrow)
+    else
+        registers[0xF] = 0;        
+
+    // Load Register Vx with Vy - Vx
+    registers[x] = registers[y] - registers[x];
+}
+
+void Chip8::OP_8xyE()
+{
+    uint8_t x = (opcode & 0x0F00u) >> 8u; // Register Vx
+
+    registers[0xF] = (registers[x] & 0x80u); // Store Most Significant bit of Vx in Vf
+
+    // Left shift value of Register Vx by 1
+    registers[x] <<= 1;
+}
+
+void Chip8::OP_9xy0()
+{
+    uint8_t y = (opcode & 0x00F0u) >> 4u; // Register Vy    
+    uint8_t x = (opcode & 0x0F00u) >> 8u; // Register Vx
+
+    if (registers[x] != registers[y]) // if Register Vx != Vy, skip the next instruction
+    {
+        pc += 2;
+    }
+}
