@@ -302,3 +302,167 @@ void Chip8::OP_Dxyn()
 
 }
 
+void Chip8::OP_Ex9E()
+{
+    uint8_t x = (opcode & 0x0F00u) >> 8u; // Register Vx
+    uint8_t key = registers[x];
+
+    if(keypad[key])
+        pc += 2; // Skip the next instruction if key in Vx is pressed
+}
+
+void Chip8::OP_ExA1()
+{
+    uint8_t x = (opcode & 0x0F00u) >> 8u; // Register Vx
+    uint8_t key = registers[x];
+
+    if(!keypad[key])
+        pc += 2; // Skip the next instruction if key in Vx is not pressed    
+}
+
+void Chip8::OP_Fx07()
+{
+    // Set Vx = delay timer value
+    uint8_t x = (opcode & 0x0F00u) >> 8u; // Register Vx
+    registers[x] = delayTimer;
+}
+
+void Chip8::OP_Fx0A()
+{
+   uint8_t x = (opcode & 0x0F00u) >> 8u; // Register Vx
+
+   // Wait for a key press and then store the value of the key in Vx
+   // Easiest way to do this is to keep PC on the same instruction by
+   // decrementing it by 2 whenever a key is not pressed
+
+   if (keypad[0])
+   {
+    registers[x] = 0;
+   }
+   else if (keypad[1])
+   {
+       registers[x] = 1;
+   } 
+      else if (keypad[2])
+   {
+       registers[x] = 2;
+   } 
+   else if (keypad[3])
+   {
+       registers[x] = 3;
+   } 
+   else if (keypad[4])
+   {
+       registers[x] = 4;
+   } 
+   else if (keypad[5])
+   {
+       registers[x] = 5;
+   } 
+   else if (keypad[6])
+   {
+       registers[x] = 6;
+   } 
+   else if (keypad[7])
+   {
+       registers[x] = 7;
+   } 
+   else if (keypad[8])
+   {
+       registers[x] = 8;
+   } 
+   else if (keypad[9])
+   {
+       registers[x] = 9;
+   } 
+   else if (keypad[10])
+   {
+       registers[x] = 10;
+   } 
+   else if (keypad[11])
+   {
+       registers[x] = 11;
+   } 
+   else if (keypad[12])
+   {
+       registers[x] = 12;
+   } 
+   else if (keypad[13])
+   {
+       registers[x] = 13;
+   } 
+   else if (keypad[14])
+   {
+       registers[x] = 14;
+   } 
+   else if (keypad[15])
+   {
+       registers[x] = 15;
+   } 
+    else
+    {
+        pc -= 2;
+    }
+}
+
+void Chip8::OP_Fx15()
+{
+    // Set Delay Timer = Vx
+    uint8_t x = (opcode & 0x0F00u) >> 8u; // Register Vx
+    delayTimer = registers[x];
+}
+
+void Chip8::Fx18()
+{
+    // Set Sound Timer = Vx
+    uint8_t x = (opcode & 0x0F00u) >> 8u; // Register Vx
+    soundTimer = registers[x];
+}
+
+void Chip8::Fx1E()
+{
+    // Index = Index + Vx
+    uint8_t x = (opcode & 0x0F00u) >> 8u; // Register Vx
+    index += registers[x];
+}
+
+void Chip8::Fx29()
+{
+    // I = Location of sprite for digit Vx
+    uint8_t x = (opcode & 0x0F00u) >> 8u; // Register Vx
+    uint8_t digit = registers[x];
+    index = FONTSET_START_ADDRESS + (5 * digit); // Because each digit occupies 5 Bytes
+}
+
+void Chip8::OP_Fx33()
+{
+    // Store Hundreds, Tens and Ones digits at Index, Index + 1 and Index + 2 
+    uint8_t x = (opcode & 0x0F00u) >> 8u; // Register Vx
+    uint8_t value = registers[x];
+
+    memory[index + 2] = value % 10; // Ones place
+    value /= 10;
+
+    memory[index + 1] = value % 10; // Tens place
+    value /= 10;
+
+    memory[index] = value % 10; // Hundreds place
+}
+
+void Chip8::OP_Fx55()
+{
+    // Store registers V0 through Vx in memory starting at location I (Index)
+    uint8_t x = (opcode & 0x0F00u) >> 8u; // Register Vx
+
+    for (uint8_t i = 0; i <= x; ++i)
+        memory[index + i] = registers[i];
+}
+
+void Chip8::OP_Fx65()
+{
+    // Read registers V0 through Vx from memory starting at location I (Index)
+    uint8_t x = (opcode & 0x0F00u) >> 8u; // Register Vx
+
+    for (uint8_t i = 0; i <= x; ++i)
+        registers[i] = memory[index + i];
+} 
