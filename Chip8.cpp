@@ -238,3 +238,67 @@ void Chip8::OP_9xy0()
         pc += 2;
     }
 }
+
+void Chip8::OP_Annn()
+{
+  // Set Index = Address
+  uint16_t address = opcode & 0x0FFFu;
+  index = address; 
+}
+
+void Chip8::OP_Bnnn()
+{
+  // Set PC = V0 + address (nnn)       
+  uint16_t address = opcode & 0x0FFFu;
+  pc = registers[0] + address;  
+}
+
+void Chip8::OP_Cxkk()
+{
+    // Set Vx = byte & random_byte
+    uint8_t x = (opcode & 0x0F00u) >> 8u; // Vx
+    uint8_t byte = opcode & 0x00FFu;
+    registers[x] = byte & randByte(randGen);
+
+}
+
+void Chip8::OP_Dxyn()
+{
+    uint8_t y = (opcode & 0x00F0u) >> 4u; // Register Vy
+    uint8_t x = (opcode & 0x0F00u) >> 8u; // Register Vx
+    uint8_t height = opcode & 0x000Fu;
+
+    // Wrap around if x and y positions exceed screen width and height
+    uint8_t xPos = registers[x] % VIDEO_WIDTH;
+    uint8_t yPos = registers[y] % VIDEO_HEIGHT;
+
+    //Set collision = 0 initially in VF
+    registers[0xF] = 0;
+
+    //Iterating rows = height and columns = 8 (Fixed for sprites)
+    for (unsigned int row = 0; row < height; ++row)
+    {
+        uint8_t spriteByte = memory[index + row];
+
+        for (unsigned int col = 0; col < 8; ++col) 
+        {
+            uint8_t spritePixel = spriteByte & (0x80u >> col);
+            uint32_t* screenPixel = &video[(yPos + row) * VIDEO_WIDTH + (xPos + col)];
+
+            // If Sprite Pixel is on, then there is possibility of collison
+            if (spritePixel)
+            {
+                // If Screen Pixel is on, then set VF = 1 (collision occured)
+                if(*screenPixel == 0xFFFFFFFF) 
+                {
+                    registers[0xF] = 1;
+                }
+
+                // XOR the Screen Pixel with 0xFFFFFFFF (as Pixel can be 0x00000000 or 0xFFFFFFFF in our case)
+                *screenPixel ^= 0xFFFFFFFF;
+            }
+        }
+    }  
+
+}
+

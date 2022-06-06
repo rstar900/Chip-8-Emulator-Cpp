@@ -33,7 +33,9 @@ uint8_t fontset[FONTSET_SIZE] =
     0xF0, 0x80, 0xF0, 0x80, 0x80  // F
 };
 
-
+// Video Width and Height
+const unsigned int VIDEO_WIDTH = 64;
+const unsigned int VIDEO_HEIGHT = 32;
 
 class Chip8 
 {
@@ -49,7 +51,7 @@ public:
     uint8_t delayTimer{};
     uint8_t soundTimer{};
     uint8_t keypad[16]{};
-    uint32_t video[64 * 32]{};
+    uint32_t video[VIDEO_WIDTH * VIDEO_HEIGHT]{};
     uint16_t opcode; 
 
     // Members required for Random Number generation
@@ -80,7 +82,11 @@ public:
     void OP_8xy6(); // SHR Vx
     void OP_8xy7(); // SUBN Vx, Vy
     void OP_8xyE(); // SHL Vx, {, Vy}
-    void OP_9xy0(); // SNE Vx, Vy   
+    void OP_9xy0(); // SNE Vx, Vy
+    void OP_Annn(); // LD I, addr
+    void OP_Bnnn(); // JP V0, addr
+    void OP_Cxkk(); // RND Vx, byte
+    void OP_Dxyn(); // DRW Vx, Vy, nibble   
 }; 
 
 #endif
