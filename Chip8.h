@@ -99,30 +99,37 @@ public:
     void OP_Fx55(); // LD [I], Vx
     void OP_Fx65(); // LD Vx, [I]
 
+    // Function pointer typedef
+    typedef void (Chip8::*Chip8Func)(); // This is the syntax for defining pointers to Member functions of a class
+
+    // Function tables
+    Chip8Func table[0xF + 1]{&Chip8::OP_NULL}; // Master Table (Contains pointers to other table functions)
+    Chip8Func table0[0xE + 1]{&Chip8::OP_NULL}; // Opcodes starting with 0x0
+    Chip8Func table8[0xE + 1]{&Chip8::OP_NULL}; // Opcodes starting with 0x8 
+    Chip8Func tableE[0xE + 1]{&Chip8::OP_NULL}; // Opcodes starting with 0xE
+    Chip8Func tableF[0x65 + 1]{&Chip8::OP_NULL}; // Opcodes starting with 0xF
+
     // Table helper functions
     void Table0()
     {
-
+        ((*this).*(table0[opcode & 0x000Fu]))();
     }
 
     void Table8()
     {
-
+        ((*this).*(table8[opcode & 0x000Fu]))();
     }
 
     void TableE()
     {
-
+        ((*this).*(tableE[opcode & 0x000Fu]))();
     }
 
     void TableF()
     {
-
+        ((*this).*(tableF[opcode & 0x00FFu]))();
     }
 
 }; 
-
-// Function pointer typedef
-typedef void (Chip8::*Chip8Func)(); // This is the syntax for defining  
 
 #endif
