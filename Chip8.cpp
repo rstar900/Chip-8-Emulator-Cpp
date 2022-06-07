@@ -515,3 +515,23 @@ void Chip8::OP_Fx65()
     for (uint8_t i = 0; i <= x; ++i)
         registers[i] = memory[index + i];
 } 
+
+void Chip8::Cycle()
+{
+    // Fetch
+    opcode = (memory[pc] << 8u) | memory[pc + 1];
+
+    // Increment PC by 2
+    pc += 2;
+
+    // Decode & Execute
+    ((*this).*(table[(opcode & 0xF000u) >> 12u]))();
+
+    // Decrement Delay Timer, if set
+    if (delayTimer > 0)
+        --delayTimer;
+
+    // Decrement Sound Timer, if set
+    if (soundTimer > 0)
+        --soundTimer;
+}

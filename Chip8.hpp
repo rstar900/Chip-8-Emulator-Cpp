@@ -130,6 +130,9 @@ public:
         ((*this).*(tableF[opcode & 0x00FFu]))();
     }
 
+    // Cycle function
+    void Cycle();
+
 }; 
 
 #endif
