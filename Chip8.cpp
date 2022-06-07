@@ -1,4 +1,4 @@
-#include "Chip8.h"
+#include "Chip8.hpp"
 
 // Constructor
 Chip8::Chip8()
@@ -461,21 +461,21 @@ void Chip8::OP_Fx15()
     delayTimer = registers[x];
 }
 
-void Chip8::Fx18()
+void Chip8::OP_Fx18()
 {
     // Set Sound Timer = Vx
     uint8_t x = (opcode & 0x0F00u) >> 8u; // Register Vx
     soundTimer = registers[x];
 }
 
-void Chip8::Fx1E()
+void Chip8::OP_Fx1E()
 {
     // Index = Index + Vx
     uint8_t x = (opcode & 0x0F00u) >> 8u; // Register Vx
     index += registers[x];
 }
 
-void Chip8::Fx29()
+void Chip8::OP_Fx29()
 {
     // I = Location of sprite for digit Vx
     uint8_t x = (opcode & 0x0F00u) >> 8u; // Register Vx
