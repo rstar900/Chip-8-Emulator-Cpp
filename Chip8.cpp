@@ -1,7 +1,13 @@
 #include "Chip8.h"
 
-// Constructor
+// Function tables
+Chip8Func table[0xF + 1]{&Chip8::OP_NULL}; // Master Table (Contains pointers to other table functions)
+Chip8Func table0[0xE + 1]{&Chip8::OP_NULL}; // Opcodes starting with 0x0
+Chip8Func table8[0xE + 1]{&Chip8::OP_NULL}; // Opcodes starting with 0x8 
+Chip8Func tableE[0xE + 1]{&Chip8::OP_NULL}; // Opcodes starting with 0xE
+Chip8Func tableF[0x65 + 1]{&Chip8::OP_NULL}; // Opcodes starting with 0xF
 
+// Constructor
 Chip8::Chip8()
     : randGen(std::chrono::system_clock::now().time_since_epoch().count())
 {
@@ -13,7 +19,24 @@ Chip8::Chip8()
         memory[FONTSET_START_ADDRESS + i] = fontset[i];
 
     // Initialize Random Number Generator
-    randByte =  std::uniform_int_distribution<uint8_t>(0, 255U);    
+    randByte =  std::uniform_int_distribution<uint8_t>(0, 255U);
+
+    // Set up function pointer tables
+
+    // table assignments
+
+
+    // table0 assignments
+
+
+    // table8 assignments
+
+
+    // tableE assignments
+
+
+    // tableF assignments
+        
 }
 
 // Function to load ROM contents into the memory for execution

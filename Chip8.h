@@ -62,7 +62,7 @@ public:
     Chip8();
     void LoadROM(char const* filename);
 
-    // Instructions
+    // Opcodes
     void OP_NULL(); // NOP instruction
     void OP_00E0(); // CLS
     void OP_00EE(); // RET
@@ -98,6 +98,31 @@ public:
     void OP_Fx33(); // LD B, Vx
     void OP_Fx55(); // LD [I], Vx
     void OP_Fx65(); // LD Vx, [I]
+
+    // Table helper functions
+    void Table0()
+    {
+
+    }
+
+    void Table8()
+    {
+
+    }
+
+    void TableE()
+    {
+
+    }
+
+    void TableF()
+    {
+
+    }
+
 }; 
+
+// Function pointer typedef
+typedef void (Chip8::*Chip8Func)(); // This is the syntax for defining  
 
 #endif
