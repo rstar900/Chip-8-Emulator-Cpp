@@ -332,7 +332,9 @@ void Chip8::OP_Dxyn()
         for (unsigned int col = 0; col < 8; ++col) 
         {
             uint8_t spritePixel = spriteByte & (0x80u >> col);
-            uint32_t* screenPixel = &video[(yPos + row) * VIDEO_WIDTH + (xPos + col)];
+
+            // Applied a fix by limiting the position inside the memory to avoid segmentation fault 11 
+            uint32_t* screenPixel = &video[((yPos + row) * VIDEO_WIDTH + (xPos + col))%(VIDEO_HEIGHT * VIDEO_WIDTH)];
 
             // If Sprite Pixel is on, then there is possibility of collison
             if (spritePixel)
