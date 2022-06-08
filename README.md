@@ -6,7 +6,7 @@ A Chip 8 emulator in C++ using SDL2 framework for graphics (referring this site:
 brew install sdl2
 <br>
 ### 2. To compile at the location of the source file, go to the directory of the source code and type (clang++ and g++ both work)
-/usr/bin/g++ -std=c++11 ./main.cpp ./Chip8.cpp ./Platform.cpp -o /Users/rachitgarg/Documents/Chip_8_Emulator/chip8 -lSDL2
+/usr/bin/g++ -std=c++11 ./main.cpp ./Chip8.cpp ./Platform.cpp -o ./chip8 -lSDL2
 
 ## I have provided a pre-compiled binary for MacOS (x86-64)
 
