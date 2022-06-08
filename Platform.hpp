@@ -1,5 +1,6 @@
 #ifndef PLATFORM_H
 #define PLATFORM_H
+
 #include <SDL2/SDL.h>
 #include <cstdint>
 
@@ -7,10 +8,10 @@ class Platform
 {
 public:
     // Constructor
-    Chip8(char const* title, int windowWidth, int windowHeight, int textureWidth, int textureHeight);
+    Platform(char const* title, int windowWidth, int windowHeight, int textureWidth, int textureHeight);
 
     // Destructor
-    ~Chip8();
+    ~Platform();
 
     void Update(void const* buffer, int pitch);
 

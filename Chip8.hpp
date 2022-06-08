@@ -1,5 +1,6 @@
 #ifndef CHIP8_H
 #define CHIP8_H
+
 #include <cstdint>
 #include <fstream>
 #include <chrono>
@@ -12,8 +13,8 @@ const unsigned FONTSET_START_ADDRESS = 0x50;
 // Other Constants
 const unsigned int FONTSET_SIZE = 80;
 
-// FONTSET Sprites in memory (Each 5 bytes)
-uint8_t fontset[FONTSET_SIZE] = 
+// FONTSET Sprites in memory (Each 5 bytes) (static : For some reason I was getting duplicate symbol in main.o)
+static uint8_t fontset[FONTSET_SIZE] = 
 {
     0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
     0x20, 0x60, 0x20, 0x20, 0x70, // 1

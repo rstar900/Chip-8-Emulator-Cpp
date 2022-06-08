@@ -1,6 +1,6 @@
 #include "Platform.hpp"
 
-void Platform::Chip8(char const* title, int windowWidth, int windowHeight, int textureWidth, int textureHeight)
+Platform::Platform(char const* title, int windowWidth, int windowHeight, int textureWidth, int textureHeight)
 {
     SDL_Init(SDL_INIT_VIDEO);
 
@@ -13,13 +13,13 @@ void Platform::Chip8(char const* title, int windowWidth, int windowHeight, int t
         textureWidth, textureHeight);
 }
 
-void Platform::~Chip8()
+Platform::~Platform()
 {
     // Basically steps of Constructor in reverse
     SDL_DestroyTexture(texture);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
-    SDl_Quit();
+    SDL_Quit();
 }
 
 void Platform::Update(void const* buffer, int pitch)
